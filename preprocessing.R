@@ -10,6 +10,7 @@
 rm(list=ls())
 
 #install and library required packages
+install.packages("BiocManager")
 BiocManager::install(c("KEGGgraph","KEGG.db","SparseM","graph"))
 list.of.packages <- c("testit", "funr")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
@@ -119,6 +120,8 @@ if(!is.na(Args[2])){stop("More than one argument!")}
 input_name<-Args[1]
 
 path<-sys.script()
+
+path<-paste(head(strsplit(x = path,split = "/")[[1]],-1),collapse = "/")
 
 #read input
 input<-read.table(file = paste(path,input_name,sep = "/"),sep = "\t",row.names = 1,header = T)
