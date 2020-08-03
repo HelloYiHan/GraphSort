@@ -11,11 +11,12 @@ rm(list=ls())
 
 #install and library required packages
 install.packages("BiocManager")
-BiocManager::install(c("KEGGgraph","KEGG.db","SparseM","graph"))
+install.packages("XML", repos = "http://www.omegahat.net/R")
+BiocManager::install(c("KEGGgraph","KEGG.db","SparseM","graph","edgeR"))
 list.of.packages <- c("testit", "funr")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
-sapply(c("KEGGgraph","KEGG.db","testit","SparseM","graph","funr"), require, character.only=TRUE)
+sapply(c("KEGGgraph","KEGG.db","testit","SparseM","graph","funr","edgeR"), require, character.only=TRUE)
 
 
 
@@ -115,19 +116,18 @@ write_file_no_pro<-function(bulk, pan_coo, numGraph, numNode, folder_path, file_
 
 
 #parameters
-if(!is.na(Args[2])){stop("More than one argument!")}
-
-input_name<-Args[1]
+if(is.na(Args[2])){stop("Not enough arguments!")}
 
 path<-sys.script()
 
+# file: /content/GraphSort/preprocessing.r, path:/content/GraphSort
 path<-paste(head(strsplit(x = path,split = "/")[[1]],-1),collapse = "/")
 
 #read input
-input<-read.table(file = paste(path,input_name,sep = "/"),sep = "\t",row.names = 1,header = T)
+input<-read.table(file = Args[1],sep = "\t",row.names = 1,header = T)
 
 #used to remove batch effect of input and training files
-train<-read.table(file = paste(path,"/data_for_rem_bat_eff.txt",sep=""),sep="\t",row.names = 1,header = F)
+train<-read.table(file = Args[2],sep="\t",row.names = 1,header = F)
 
 #check if input file has required genes
 assert("The input file has too little required genes.", sum(rownames(input) %in% rownames(train))>0)
