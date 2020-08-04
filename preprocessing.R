@@ -9,13 +9,16 @@
 
 rm(list=ls())
 
-#install and library required packages
-install.packages("BiocManager")
-install.packages("XML", repos = "http://www.omegahat.net/R")
-BiocManager::install(c("KEGGgraph","KEGG.db","SparseM","graph","edgeR"))
-list.of.packages <- c("testit", "funr")
+if(!"XML" %in% installed.packages()[,"Package"]) install.packages("XML", repos = "http://www.omegahat.net/R")
+
+list.of.packages <- c("BiocManager","XML","testit", "funr")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
+
+list.of.packages.bioconductor <- c("KEGGgraph","KEGG.db","SparseM","graph","edgeR")
+new.packages <- list.of.packages.bioconductor[!(list.of.packages.bioconductor %in% installed.packages()[,"Package"])]
+if(length(new.packages)) BiocManager::install(new.packages)
+
 sapply(c("KEGGgraph","KEGG.db","testit","SparseM","graph","funr","edgeR"), require, character.only=TRUE)
 
 
@@ -173,6 +176,10 @@ assert("The input file has too little required genes.", sum(colSums(arrange_resu
 
 input_name<-tail(strsplit(x = Args[1],split = "/")[[1]],1)
 
-dir.create(paste("InputFile",input_name,sep = "_"))
+dir_name<-paste("InputFile",input_name,sep = "_")
 
-write_file_no_pro(arrange_results$simBulk, arrange_results$pan_coo, arrange_results$numGraph, arrange_results$numNode,path, 'InputFile')
+dir.create(dir_name)
+
+write_file_no_pro(arrange_results$simBulk, arrange_results$pan_coo, arrange_results$numGraph, arrange_results$numNode,".", dir_name)
+
+system(paste("zip -r",paste0(dir_name,".zip"),dir_name,sep = " "))
