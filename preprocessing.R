@@ -138,7 +138,7 @@ rownames(merge_input_train)<-merge_input_train[,1]
 
 merge_input_train<-merge_input_train[,-1]
 
-batch_num<-c(rep(1,2000),rep(2,dim(input)[2]))
+batch_num<-c(rep(1,1000),rep(2,dim(input)[2]))
 
 #Reference of ComBat_seq
 #Zhang, Y., Parmigiani, G., & Johnson, W. E. (2020). ComBat-Seq: batch effect adjustment for RNA-Seq count data. bioRxiv, 904730.
@@ -167,8 +167,12 @@ pfile<- paste(path,"kgml", file, sep="/")
 graph_gene<-read.csv(paste(path,"GraphGenes.csv",sep = '/'),stringsAsFactors = F)
 
 #arrange data to required format
-arrange_results<-arrange_format(pfile,graph_gene,data_no_batch[,2001:dim(merge_input_train)[2]],'Ensembl')
+arrange_results<-arrange_format(pfile,graph_gene,data_no_batch[,1001:dim(merge_input_train)[2]],'Ensembl')
 
-assert("The input file has too little required genes.", sum(colSums(arrange_results$simBulk)>0)==dim(arrange_results$simBulk))
+assert("The input file has too little required genes.", sum(colSums(arrange_results$simBulk)>0)==dim(arrange_results$simBulk)[2])
+
+input_name<-tail(strsplit(x = Args[1],split = "/")[[1]],1)
+
+dir.create(paste("InputFile",input_name,sep = "_"))
 
 write_file_no_pro(arrange_results$simBulk, arrange_results$pan_coo, arrange_results$numGraph, arrange_results$numNode,path, 'InputFile')
