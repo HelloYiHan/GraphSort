@@ -45,7 +45,8 @@ elif args.type == 'microarray':
 else:
     raise RuntimeError('Data type argument (--type or -t) must be rnaseq or microarray.')
 
-preprocess = subprocess.call(["./preprocessing.R", args.input, train_file, args.type])
+subprocess.call(['chmod u+x', path + '/preprocessing.R'])
+subprocess.call([path + '/preprocessing.R', args.input, train_file, args.type])
 
 #load model
 model = Net(num_features = 1, y_size = 8).to(device)
@@ -61,7 +62,7 @@ elif args.type =='microarray':
         model.load_state_dict(torch.load('./trained_models/.pkl',map_location='cpu'))
 print("load model done")
 #estimation
-dataset_input = read_dataset.two_dim_data(zippath=args.input,root=osp.join('.', 'data', args.input),name=args.input,use_node_attr=True)
+dataset_input = read_dataset.two_dim_data(zippath= 'InputFile_' + args.input + '.zip',root=osp.join('.', 'data', args.input),name=args.input,use_node_attr=True)
 print("read_dataset done")
 loader_input = torch_geometric.data.DataLoader(dataset_input, batch_size=args.batch_size)
 print("loader done")

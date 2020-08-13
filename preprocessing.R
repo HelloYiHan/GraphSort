@@ -1,3 +1,4 @@
+#! /usr/bin/Rscript
 #Preprocess expression data for GraphSort
 #Author: Yi Han et al.
 #R packages requirements: "KEGGgraph","KEGG.db","testit","SparseM","graph","funr","edgeR"
@@ -16,13 +17,13 @@ new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"
 
 if(length(new.packages)) install.packages(new.packages)
 
-list.of.packages.bioconductor <- c("KEGGgraph","KEGG.db","SparseM","graph","edgeR","sva")
+list.of.packages.bioconductor <- c("KEGGgraph","KEGG.db","SparseM","graph","edgeR","sva","preprocessCore")
 
 new.packages <- list.of.packages.bioconductor[!(list.of.packages.bioconductor %in% installed.packages()[,"Package"])]
 
 if(length(new.packages)) BiocManager::install(new.packages)
 
-sapply(c("KEGGgraph","KEGG.db","testit","SparseM","graph","funr","edgeR"), require, character.only=TRUE)
+sapply(c("KEGGgraph","KEGG.db","testit","SparseM","graph","funr","edgeR","sva","preprocessCore"), require, character.only=TRUE)
 
 #2.functions----------------------------------------------------------------
 arrange_format<-function(pfiles,graph_genes, bulk_rna_seq, gene_name_type){
