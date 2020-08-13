@@ -77,3 +77,13 @@ def pearson(x, y):
     y = y - torch.mean(y, dim=1)[:,None]
     cor = torch.sum(x * y,dim=1) / (torch.sqrt(torch.sum(x ** 2,dim=1)) * torch.sqrt(torch.sum(y ** 2,dim=1)))
     return cor
+
+
+def estimate(loader, rFile):
+    model.eval()
+    for data in loader:
+        data = data.to(device)
+        x = model(data)
+        with open(rFile, "a") as fr:
+            np.savetxt(fr,x.cpu().detach().numpy())
+    return 0
