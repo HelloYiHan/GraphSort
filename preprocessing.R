@@ -9,19 +9,19 @@
 rm(list=ls())
 
 #1.install and library packages---------------------------------------------
-if(!"XML" %in% installed.packages()[,"Package"]) install.packages("XML", repos = "http://www.omegahat.net/R")
+if(!"XML" %in% installed.packages()[,"Package"]) install.packages("XML", repos = "http://www.omegahat.net/R", quiet = T)
 
 list.of.packages <- c("BiocManager","XML","testit", "funr")
 
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 
-if(length(new.packages)) install.packages(new.packages)
+if(length(new.packages)) install.packages(new.packages,quiet = T)
 
 list.of.packages.bioconductor <- c("KEGGgraph","KEGG.db","SparseM","graph","edgeR","sva","preprocessCore")
 
 new.packages <- list.of.packages.bioconductor[!(list.of.packages.bioconductor %in% installed.packages()[,"Package"])]
 
-if(length(new.packages)) BiocManager::install(new.packages)
+if(length(new.packages)) BiocManager::install(new.packages, quiet = T, update = F)
 
 sapply(c("KEGGgraph","KEGG.db","testit","SparseM","graph","funr","edgeR","sva","preprocessCore"), require, character.only=TRUE)
 

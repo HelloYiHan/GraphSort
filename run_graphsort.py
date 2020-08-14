@@ -15,8 +15,9 @@ parser = argparse.ArgumentParser(description='Arguments of GraphSort')
 parser.add_argument('--input', '-i', type=str, help = 'Expression data of samples', required = True)
 parser.add_argument('--type', '-t', type=str, help = 'Data type, rnaseq OR microarray)',required = True)
 parser.add_argument('--output', '-o', type=str, help = 'File name of output', default = 'graphsort_out.txt')
-parser.add_argument('--batch_size', '-b', type=int, help = 'Batch size for computation', default = '10')
+parser.add_argument('--batch_size', '-b', type=int, help = 'Batch size for computation', default = 10)
 parser.add_argument('--device', '-d', type=str, help = 'Computation device, gpu OR cpu', default = 'cpu')
+parser.add_argument('--size', '-s', type=str, help = 'Size of preprocessing data, 1k OR 2k', default = '1k')
 args = parser.parse_args()
 
 print(args.input)
@@ -24,6 +25,7 @@ print(args.type)
 print(args.output)
 print(args.batch_size)
 print(args.device)
+print(args.size)
 
 #select device
 if args.device == 'cpu':
@@ -39,9 +41,14 @@ path = os.path.dirname(os.path.abspath(__file__))
 
 #preprocess
 if args.type == 'rnaseq':
+    if args.size == '1k':
         train_file = path + '/rem_bat_eff_dat_n1000.txt'
+    elif args.size == '2k':
+        train_file = path + '/rem_bat_eff_dat_n2000.txt'
+    else:
+        raise RuntimeError('Size of preprocessing data (--size or -s) must be 1k or 2k.')
 elif args.type == 'microarray':
-        train_file = path + '/rem_bat_eff_dat_microarray.txt'
+    train_file = path + '/rem_bat_eff_dat_microarray.txt'
 else:
     raise RuntimeError('Data type argument (--type or -t) must be rnaseq or microarray.')
 
