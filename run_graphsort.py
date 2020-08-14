@@ -2,7 +2,7 @@ import os
 #os.chdir('GraphSort') 先把要计算的文件都放到这个程序所在的目录下
 import argparse
 import torch
-from graphsort_core import Net #把原来的graphsort.py改名为graphsort_core.py
+import graphsort_core #把原来的graphsort.py改名为graphsort_core.py
 import read_dataset
 #import graphsort_test
 import os.path as osp
@@ -45,11 +45,11 @@ elif args.type == 'microarray':
 else:
     raise RuntimeError('Data type argument (--type or -t) must be rnaseq or microarray.')
 
-subprocess.call(['chmod u+x', path + '/preprocessing.R'])
+subprocess.call(['chmod', 'u+x', path + '/preprocessing.R'])
 subprocess.call([path + '/preprocessing.R', args.input, train_file, args.type])
 
 #load model
-model = Net(num_features = 1, y_size = 8).to(device)
+model = graphsort_core.Net(num_features = 1, y_size = 8).to(device)
 if args.type == 'rnaseq':
     if device.type == "cuda":
         model.load_state_dict(torch.load(path + '/trained_models/state1627195299007epoch60.pkl',map_location='cuda'))
@@ -60,11 +60,9 @@ elif args.type =='microarray':
         model.load_state_dict(torch.load('./trained_models/.pkl',map_location='cuda'))
     else:
         model.load_state_dict(torch.load('./trained_models/.pkl',map_location='cpu'))
-print("load model done")
+
 #estimation
-dataset_input = read_dataset.two_dim_data(zippath= 'InputFile_' + args.input + '.zip',root=osp.join('.', 'data', args.input),name=args.input,use_node_attr=True)
-print("read_dataset done")
+dataset_input = read_dataset.two_dim_data(zippath= 'InputFile_' + args.input + '.zip', root = osp.join('.', 'data', 'InputFile_' + args.input), name = 'InputFile_' + args.input, use_node_attr = True)
 loader_input = torch_geometric.data.DataLoader(dataset_input, batch_size=args.batch_size)
-print("loader done")
-graphsort_core.estimate(loader_input,args.output)
+graphsort_core.estimate(model, loader_input, device, args.output)
 print("GraphSort estimation done")
