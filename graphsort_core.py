@@ -135,8 +135,8 @@ class Net(torch.nn.Module):
         
         return x
 
-        
-def estimate(loader, rFile):
+
+def estimate(model, loader, device, rFile):
     model.eval()
     for data in loader:
         data = data.to(device)
