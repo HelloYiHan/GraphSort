@@ -23,7 +23,10 @@ new.packages <- list.of.packages.bioconductor[!(list.of.packages.bioconductor %i
 
 if(length(new.packages)) BiocManager::install(new.packages, quiet = T, update = F)
 
-sapply(c("KEGGgraph","KEGG.db","testit","SparseM","graph","funr","edgeR","sva","preprocessCore"), require, character.only=TRUE)
+suppressPackageStartupMessages({
+  sapply(c("KEGGgraph","KEGG.db","testit","SparseM","graph","funr","edgeR","sva","preprocessCore"), require, character.only=TRUE)
+})
+
 
 #2.functions----------------------------------------------------------------
 arrange_format<-function(pfiles,graph_genes, bulk_rna_seq, gene_name_type){
