@@ -6,6 +6,7 @@ import read_dataset
 import os.path as osp
 import torch_geometric.data
 import subprocess
+import numpy as np
 
 #arguments
 parser = argparse.ArgumentParser(description='Arguments of GraphSort')
@@ -61,12 +62,12 @@ elif args.type =='microarray':
 
 #estimation
 print('Start estimation')
+
 dataset_input = read_dataset.two_dim_data(zippath= 'InputFile_' + args.input + '.zip', root = osp.join('.', 'data', 'InputFile_' + args.input), name = 'InputFile_' + args.input, use_node_attr = True)
 loader_input = torch_geometric.data.DataLoader(dataset_input, batch_size=args.batch_size)
-
 if args.type == 'rnaseq':
-    graphsort_core.estimateRNASEQ(model, loader_input, device, args.output)
+    graphsort_core.estimateRNASEQ(model, loader_input, device, args.output, args.input)
 elif args.type == 'microarray':
-    graphsort_core.estimateMicroarray(model, loader_input, device, args.output)
+    graphsort_core.estimateMicroarray(model, loader_input, device, args.output, args.input)
 
 print("GraphSort estimation done")

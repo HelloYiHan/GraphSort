@@ -135,28 +135,55 @@ class Net(torch.nn.Module):
         
         return x
 
+def estimateRNASEQ(model, loader, device, rFile, input_file):
+    cell_types = np.array([['Sample','B cells','CD4 T cells','CD8 T cells','Basophils','Dendritic cells','Monocytes','NK cells']])
 
-def estimateRNASEQ(model, loader, device, rFile):
+    sample_names = np.loadtxt('InputFile_' + input_file + '/input_file_sample_info.txt', str, delimiter='\t')
+    sample_names = sample_names[:,np.newaxis]
+
+    cell_fractions = []
     model.eval()
     for data in loader:
         data = data.to(device)
         x = model(data)
         x = torch.cat((x[:,0].unsqueeze(1),x[:,1].unsqueeze(1),x[:,2].unsqueeze(1),x[:,3].unsqueeze(1),x[:,4].unsqueeze(1),x[:,5].unsqueeze(1),x[:,6].unsqueeze(1)),1)
-        title = np.array(['B cells','CD4 T cells','CD8 T cells','Basophils','Dendritic cells','Monocytes','NK cells'])
-        with open(rFile, "a") as fr:
-            np.savetxt(fr,title)
-            np.savetxt(fr,x.cpu().detach().numpy())
+        x = x.cpu().detach()
+        cell_fractions.append(x)
+    cell_fractions = torch.cat(cell_fractions, dim=0).numpy()
+    
+    if np.shape(cell_fractions)[0] == np.shape(sample_names)[0]:
+        results = np.c_[sample_names,cell_fractions]
+    else:
+        raise RuntimeError('The number of sample name is different from that of cell fraction result.')
+
+    with open(rFile, "w") as fr:
+            np.savetxt(fr, cell_types, delimiter="\t", fmt="%s")
+            np.savetxt(fr, results, delimiter="\t", fmt="%s")
+
     return 0
 
+def estimateMicroarray(model, loader, device, rFile, input_file):
+    cell_types = np.array([['Sample','Memory B cells','Naive B cells','Plasma cells','CD4 T cells','CD8 T cells','Monocytes','Dendritic cells','NK cells']])
+    
+    sample_names = np.loadtxt('InputFile_' + input_file + '/input_file_sample_info.txt', str, delimiter='\t')
+    sample_names = sample_names[:,np.newaxis]
 
-
-def estimateMicroarray(model, loader, device, rFile):
+    cell_fractions = []
     model.eval()
     for data in loader:
         data = data.to(device)
         x = model(data)
-        title = np.array(['Memory B cells','Naive B cells','Plasma cells','CD4 T cells','CD8 T cells','Monocytes','Dendritic cells','NK cells'])
-        with open(rFile, "a") as fr:
-            np.savetxt(fr,title)
-            np.savetxt(fr,x.cpu().detach().numpy())
+        x = x.cpu().detach()
+        cell_fractions.append(x)
+    cell_fractions = torch.cat(cell_fractions, dim=0).numpy()
+    
+    if np.shape(cell_fractions)[0] == np.shape(sample_names)[0]:
+        results = np.c_[sample_names,cell_fractions]
+    else:
+        raise RuntimeError('The number of sample name is different from that of cell fraction result.')
+
+    with open(rFile, "w") as fr:
+            np.savetxt(fr, cell_types, delimiter="\t", fmt="%s")
+            np.savetxt(fr, results, delimiter="\t", fmt="%s")
+
     return 0

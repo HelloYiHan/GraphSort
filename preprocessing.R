@@ -215,4 +215,6 @@ dir.create(dir_name)
 
 write_file_no_pro(arrange_results$simBulk, arrange_results$pan_coo, arrange_results$numGraph, arrange_results$numNode,".", dir_name)
 
+write.table(colnames(input),paste(".",dir_name,"input_file_sample_info.txt",sep = "/"),quote = F,sep = "\t",row.names = F,col.names = F)
+
 system(paste("zip -r",paste0(dir_name,".zip"),dir_name,sep = " "))
