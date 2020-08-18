@@ -136,11 +136,27 @@ class Net(torch.nn.Module):
         return x
 
 
-def estimate(model, loader, device, rFile):
+def estimateRNASEQ(model, loader, device, rFile):
     model.eval()
     for data in loader:
         data = data.to(device)
         x = model(data)
+        x = torch.cat((x[:,0].unsqueeze(1),x[:,1].unsqueeze(1),x[:,2].unsqueeze(1),x[:,3].unsqueeze(1),x[:,4].unsqueeze(1),x[:,5].unsqueeze(1),x[:,6].unsqueeze(1)),1)
+        title = np.array(['B cells','CD4 T cells','CD8 T cells','Basophils','Dendritic cells','Monocytes','NK cells'])
         with open(rFile, "a") as fr:
+            np.savetxt(fr,title)
+            np.savetxt(fr,x.cpu().detach().numpy())
+    return 0
+
+
+
+def estimateMicroarray(model, loader, device, rFile):
+    model.eval()
+    for data in loader:
+        data = data.to(device)
+        x = model(data)
+        title = np.array(['Memory B cells','Naive B cells','Plasma cells','CD4 T cells','CD8 T cells','Monocytes','Dendritic cells','NK cells'])
+        with open(rFile, "a") as fr:
+            np.savetxt(fr,title)
             np.savetxt(fr,x.cpu().detach().numpy())
     return 0
