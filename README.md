@@ -68,6 +68,7 @@ The `format` of the input `Microarray` data should be:
 
 ## Output file
 For RNA-Seq data, GraphSort could estimate fractions of 7 immune cell types: B cells, CD4 T cells, CD8 T cells, Monocytes, Basophils, Dendritic cells, NK cells.
+
 For Microarray data, GraphSort could estimate frcations of 8 immune cell types: Memory B cells, Naive B cells, Plasma cells, CD4 T cells, CD8 T cells, Monocytes, Dendritic cells, NK cells.
 
 ## Examples
