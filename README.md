@@ -60,4 +60,6 @@ python ./GraphSort/run_graphsort.py --input example_data_gse107011.txt --type rn
 
 ## Cite
 Please cite our paper if you use this code in your own work:
+```
 Yi Han, et al. (2020). GraphSort: a geometric deep learning algorithm for in silico dissecting cell compositions in bulk expression data. In preparation.
+```
