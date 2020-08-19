@@ -52,6 +52,22 @@ Optional auguments:
 --device       -d      Computation device: gpu OR cpu. Default: cpu
 --size         -s      Data size in preprocessing(only matters for RNA-Seq data): 1k OR 2k. Default: 1k
 ```
+## Mixture input file formatting requirements
+The `format` of the input `RNA-Seq` data should be:
+* Tab-delimited with no double quotations and no missing entries.
+* The first row should be sample name.
+* The first column should be ensembl gene id.
+* Values are not log-transformed.
+* Values should be raw counts.
+
+The `format` of the input `Microarray` data should be:
+* Tab-delimited with no double quotations and no missing entries.
+* The first row should be sample name.
+* The first column should be gene symbol.
+* Values are not log-transformed.
+
+## Output file
+GraphSort could estimate 7 immune cell fractions
 
 ## Examples
 ```
