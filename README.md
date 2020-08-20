@@ -34,10 +34,8 @@ e.g.
 unzip rem_bat_eff_dat_n1000.zip
 mv rem_bat_eff_dat_n1000.txt ./GraphSort
 ```
-## Installation Online
-Install in Google Colab online.
-
-
+## Run Online
+GraphSort could be installed and run in [Google Colab online](https://colab.research.google.com/drive/1n8IYkP8SeSOhyrYDdcJYJ6EtMwK7NWBn?usp=sharing)
 ## Usage
 ```
 python run_graphsort.py [arguments]
@@ -66,10 +64,10 @@ The `format` of the input `Microarray` data should be:
 * The first column should be gene symbol.
 * Values are not log-transformed.
 
-## Output file
-For RNA-Seq data, GraphSort could estimate fractions of 7 immune cell types: B cells, CD4 T cells, CD8 T cells, Monocytes, Basophils, Dendritic cells, NK cells.
+## Output
+For RNA-Seq data, GraphSort could estimate fractions of 7 immune cell types: B cells, CD4 T cells, CD8 T cells, Monocytes, Basophils, Dendritic cells, and NK cells.
 
-For Microarray data, GraphSort could estimate frcations of 8 immune cell types: Memory B cells, Naive B cells, Plasma cells, CD4 T cells, CD8 T cells, Monocytes, Dendritic cells, NK cells.
+For Microarray data, GraphSort could estimate frcations of 8 immune cell types: Memory B cells, Naive B cells, Plasma cells, CD4 T cells, CD8 T cells, Monocytes, Dendritic cells, and NK cells.
 
 ## Examples
 ```
@@ -77,6 +75,5 @@ python ./GraphSort/run_graphsort.py --input example_data_gse107011.txt --type rn
 ```
 
 ## Cite
-Please cite our paper if you use this code in your own work:
-> Yi Han, et al. (2020). GraphSort: a geometric deep learning algorithm for in silico dissecting cell compositions in bulk expression data. In preparation.
-
+Please cite our paper if you use GraphSort in your work:
+> Han, Y. et al. (2020) GraphSort: a geometric deep learning algorithm for in silico dissecting cell compositions in bulk expression data. Manuscript submitted for publication.
