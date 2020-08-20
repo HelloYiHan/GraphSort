@@ -2,8 +2,8 @@
 GraphSort is a novel tool for in silico estimation of immune cell compositions in blood. Gene interactive relation information is extracted by GraphSort with graph convolutional network (GCN) and helped improve the accuracy of estimation. Signature matrix is no longer needed any more for GraphSort thanks to the GCN.
 
 ## Brief introduction
-
-work flow figure
+The workflow of GraphSort.
+![alt text](https://github.com/HelloYiHan/GraphSort/blob/master/FigInGitHub.png?raw=true)
 
 ## Installation
 Setup a conda environment is recommended.
