@@ -1,11 +1,12 @@
 #! /usr/bin/Rscript
 #Preprocess expression data for GraphSort
-#Author: Yi Han et al.
+#Author: Han, Y. et al.
 #R packages requirements: "KEGGgraph","KEGG.db","testit","SparseM","graph","funr","edgeR"
 #Input expression file requirements: Tab-delimited with no quotations and no missing entries.
 #                                    Ensembl gene IDs in column 1. Mixture labels in row 1.
 #                                    Microarray data should should be quantile normalized and in non-log space.
 #Parameters: input file, training file, input data type(rnaseq or microarray)
+
 rm(list=ls())
 
 #1.install and library packages---------------------------------------------
@@ -110,7 +111,7 @@ write_file_no_pro<-function(bulk, pan_coo, numGraph, numNode, folder_path, file_
   }
   write.table(nodeAttribute,paste(folder_path,"/",file_name,"/",file_name,"_node_attributes.txt",sep = ''),quote = F,sep = ',',row.names = F,col.names = F)
   
-  #A (edge adjacent matrix)
+  #edge adjacent matrix
   AEdge<-cbind(pan_coo@ia,pan_coo@ja)
   for (Ngraph in c(1:(numGraph-1))) {
     AEdge<-rbind(AEdge,cbind(pan_coo@ia,pan_coo@ja)+Ngraph*numNode)
@@ -126,7 +127,6 @@ if(is.na(Args[3])){stop("Not enough arguments!")}
 
 path<-sys.script()
 
-# file: /content/GraphSort/preprocessing.r, path:/content/GraphSort
 path<-paste(head(strsplit(x = path,split = "/")[[1]],-1),collapse = "/")
 
 #4.pre-defined variables and data----------------------------------------------------------
@@ -150,12 +150,10 @@ pfile<- paste(path,"kgml", file, sep="/")
 graph_gene<-read.csv(paste(path,"GraphGenes.csv",sep = '/'),stringsAsFactors = F)
 
 #5.read input----------------------------------------------------------------------------
-#"d:/Paper/Deconvolution/code and data/GraphSort/datasets/example_data_gse106898.txt"
-#"d:/data/deconvolution/final 2020-1-5/Microarray/PBMCs-Fig3a-HumanHT-12-V4.txt",不用example_data_gse65133，因为那是probeID
+
 input<-read.table(file = Args[1],sep = "\t",row.names = 1,header = T,stringsAsFactors = F)
 
 #used to remove batch effect of input and training files
-#"d:/Paper/Deconvolution/code and data/GraphSort/datasets/rem_bat_eff_dat_microarray.txt"
 train<-read.table(file = Args[2],sep="\t",row.names = 1,header = T,stringsAsFactors = F)
 
 n_train<-dim(train)[2]
@@ -189,8 +187,6 @@ if (Args[3]=="rnaseq") {
   input<-as.data.frame(preprocessCore::normalize.quantiles(as.matrix(input)))
   colnames(input)<-input_column_names
   rownames(input)<-input_row_names
-  
-  #train<-read.table("d:/Paper/Deconvolution/code and data/GraphSort/datasets/rem_bat_eff_dat_microarray.txt",row.names = 1,header = T,stringsAsFactors = F,sep = "t")
   
   merge_input_train<-merge(train,input,by.x='row.names',by.y='row.names')
   

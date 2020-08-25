@@ -7,6 +7,10 @@ import torch.nn.functional as F
 from torch_geometric.nn import ARMAConv, TopKPooling
 from torch_geometric.nn import global_mean_pool as gap, global_max_pool as gmp
 
+#reference:
+#Fey, Matthias, and Jan Eric Lenssen.
+#"Fast graph representation learning with PyTorch Geometric." arXiv preprint arXiv:1903.02428 (2019).
+
 class Net(torch.nn.Module):
     def __init__(self, y_size, num_features=1):
         self.num_features = num_features
