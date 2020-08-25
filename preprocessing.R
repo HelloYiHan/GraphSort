@@ -198,7 +198,7 @@ if (Args[3]=="rnaseq") {
   
   merge_input_train<-merge_input_train[,-1]
   
-  #这里先combat再arrange，试下好不好。之前是先arrange在combat。
+  
   data_no_batch<-ComBat(dat=as.matrix(merge_input_train), batch = batch_num)
   
   arrange_results<-arrange_format(pfile,graph_gene,data_no_batch[,(n_train+1):dim(merge_input_train)[2]],'Symbol')

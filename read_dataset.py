@@ -6,6 +6,9 @@ import torch
 from torch_geometric.data import InMemoryDataset, extract_zip
 from torch_geometric.io import read_tu_data
 
+#reference:
+#Fey, Matthias, and Jan Eric Lenssen. "Fast graph representation learning with PyTorch Geometric."
+#arXiv preprint arXiv:1903.02428 (2019).
 
 class two_dim_data(InMemoryDataset):
 
