@@ -1,0 +1,43 @@
+This is a detailed example for running GraphSort. Downloadeding, preprocessing, uploading, and running of a microarray dataset GSE59654 was shown here.
+
+Step 1. Download the dataset.
+The series matrix file was downloaded from GEO (https://www.ncbi.nlm.nih.gov/geo/).
+
+Step 2. Preprocess the series matrix file. Example R code was below.
+library(illuminaHumanv4.db)
+library(data.table)
+
+gse59654<-read.table("GSE59654_series_matrix.txt", sep="\t", row.names = 1, header = T, stringsAsFactors = F, skip = 66, fill = T)
+
+gse59654<-gse59654[-44892,]
+
+gse59654<-2^gse59654 #non-log values were needed
+
+gse59654_symbol<- AnnotationDbi::mapIds(illuminaHumanv4.db, rownames(gse59654), 'SYMBOL', 'PROBEID')
+
+gse59654<-cbind(gse59654_symbol, gse59654, stringsAsFactors=F)
+
+gse59654<-na.omit(gse59654)
+
+gse59654.data.table<-as.data.table(gse59654, keep.rownames = T)
+
+#in the case of duplicates, only the probes with maximum value were kept
+gse59654.data.table[,sum:=(rowSums(gse59654.data.table[,-c(1,2)]))]
+
+gse59654.unique.probe<-gse59654.data.table[gse59654.data.table[,.I[sum==max(sum)], by=gse59654_symbol]$V1]
+
+gse59654.unique.probe[,`:=`(sum = NULL, rn  = NULL)]
+
+gse59654.unique.probe<-as.data.frame(gse59654.unique.probe)
+
+rownames(gse59654.unique.probe)<-gse59654.unique.probe[,1]
+
+gse59654.unique.probe<-gse59654.unique.probe[,-1]
+
+write.table(x = gse59654.unique.probe, file = "gse59654.processed.txt", sep="\t", row.names = T, col.names = T, quote = F)
+
+Step 3. Upload the preprocessed file to Google Colab.
+Sometimes, there will be internet problems and something wrong with uploading. Check the file size and make sure the whole file is uploaded.
+
+Step 4. Run GraphSort.
+Remember to use proper arguments according to the input file. Here we set --type to be microarray.
