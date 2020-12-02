@@ -8,6 +8,7 @@ The workflow of GraphSort:
 ## Run Online
 GraphSort could be installed and run in [Google Colab online](https://colab.research.google.com/drive/1n8IYkP8SeSOhyrYDdcJYJ6EtMwK7NWBn?usp=sharing)
 
+Please read the manual below especially the Formatting Requirements of Input Mixture File before running the program.
 ## Local Installation
 
 ### PyTorch and Extension Libraries
@@ -51,16 +52,16 @@ Optional arguments:
 ```
 ## Formatting Requirements of Input Mixture File 
 The `format` of the input `RNA-Seq` data should be:
-* Tab-delimited with no double quotations and no missing entries.
+* `Tab-delimited` with no double quotations and no missing entries.
 * The first row consists of sample names.
-* The first column consists of Ensembl gene IDs.
+* The first column consists of `Ensembl Gene IDs`.
 * Values are not log-transformed.
 * Values should be raw counts.
 
 The `format` of the input `Microarray` data should be:
-* Tab-delimited with no double quotations and no missing entries.
+* `Tab-delimited` with no double quotations and no missing entries.
 * The first row consists of sample names.
-* The first column consists of gene symbols.
+* The first column consists of `Gene Symbols`.
 * Values are not log-transformed.
 
 ## Output
