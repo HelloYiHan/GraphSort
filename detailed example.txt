@@ -1,9 +1,9 @@
-This is a detailed example for running GraphSort. Downloadeding, preprocessing, uploading, and running of a microarray dataset GSE59654 was shown here.
+This is a detailed example for running GraphSort. Downloadeding, preprocessing, uploading, and running of a microarray dataset GSE59654 are shown here.
 
 Step 1. Download the dataset.
 The series matrix file was downloaded from GEO (https://www.ncbi.nlm.nih.gov/geo/).
 
-Step 2. Preprocess the series matrix file. Example R code was below.
+Step 2. Preprocess the series matrix file. Example R code is below.
 library(illuminaHumanv4.db)
 library(data.table)
 
