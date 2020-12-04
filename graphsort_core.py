@@ -191,3 +191,29 @@ def estimateMicroarray(model, loader, device, rFile, input_file):
             np.savetxt(fr, results, delimiter="\t", fmt="%s")
 
     return 0
+
+def estimatePancreatic(model, loader, device, rFile, input_file):
+    cell_types = np.array([['Sample','Delta','Alpha','Gamma','Ductal','Acinar','Beta']])
+
+    sample_names = np.loadtxt('InputFile_' + input_file + '/input_file_sample_info.txt', str, delimiter='\t')
+    sample_names = sample_names[:,np.newaxis]
+
+    cell_fractions = []
+    model.eval()
+    for data in loader:
+        data = data.to(device)
+        x = model(data)
+        x = x.cpu().detach()
+        cell_fractions.append(x)
+    cell_fractions = torch.cat(cell_fractions, dim=0).numpy()
+    
+    if np.shape(cell_fractions)[0] == np.shape(sample_names)[0]:
+        results = np.c_[sample_names,cell_fractions]
+    else:
+        raise RuntimeError('The number of sample name is different from that of cell fraction result.')
+
+    with open(rFile, "w") as fr:
+            np.savetxt(fr, cell_types, delimiter="\t", fmt="%s")
+            np.savetxt(fr, results, delimiter="\t", fmt="%s")
+
+    return 0

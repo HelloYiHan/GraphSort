@@ -11,7 +11,7 @@ import numpy as np
 #1.arguments
 parser = argparse.ArgumentParser(description='Arguments of GraphSort')
 parser.add_argument('--input', '-i', type=str, help = 'Expression data of samples', required = True)
-parser.add_argument('--type', '-t', type=str, help = 'Data type, rnaseq OR microarray)',required = True)
+parser.add_argument('--type', '-t', type=str, help = 'Data type, rnaseq, microarray, OR pancreatic)',required = True)
 parser.add_argument('--output', '-o', type=str, help = 'File name of output', default = 'graphsort_out.txt')
 parser.add_argument('--batch_size', '-b', type=int, help = 'Batch size for computation', default = 10)
 parser.add_argument('--device', '-d', type=str, help = 'Computation device, gpu OR cpu', default = 'cpu')
@@ -41,6 +41,8 @@ if args.type == 'rnaseq':
         raise RuntimeError('Size of preprocessing data (--size or -s) must be 1k or 2k.')
 elif args.type == 'microarray':
     train_file = path + '/rem_bat_eff_dat_microarray.txt'
+elif args.type == 'pancreatic':
+    train_file = path + '/rem_bat_eff_dat_pancreatic.txt'
 else:
     raise RuntimeError('Data type argument (--type or -t) must be rnaseq or microarray.')
 
@@ -60,6 +62,11 @@ elif args.type =='microarray':
         model.load_state_dict(torch.load(path + '/trained_models/graphsort_microarray_model.pkl',map_location='cuda'))
     else:
         model.load_state_dict(torch.load(path + '/trained_models/graphsort_microarray_model.pkl',map_location='cpu'))
+elif args.type == 'pancreatic':
+    if device.type == "cuda":
+        model.load_state_dict(torch.load(path + '/trained_models/graphsort_pancreatic_model.pkl',map_location='cuda'))
+    else:
+        model.load_state_dict(torch.load(path + '/trained_models/graphsort_pancreatic_model.pkl',map_location='cpu'))
 
 #5.estimation
 print('Start estimation')
@@ -69,4 +76,6 @@ if args.type == 'rnaseq':
     graphsort_core.estimateRNASEQ(model, loader_input, device, args.output, args.input)
 elif args.type == 'microarray':
     graphsort_core.estimateMicroarray(model, loader_input, device, args.output, args.input)
+elif args.type == 'pancreatic':
+    graphsort_core.estimatePancreatic(model, loader_input, device, args.output, args.input)
 print("GraphSort estimation done")

@@ -198,6 +198,23 @@ if (Args[3]=="rnaseq") {
   data_no_batch<-ComBat(dat=as.matrix(merge_input_train), batch = batch_num)
   
   arrange_results<-arrange_format(pfile,graph_gene,data_no_batch[,(n_train+1):dim(merge_input_train)[2]],'Symbol')
+} else if (Args[3]=="pancreatic") {
+  
+  merge_input_train<-merge(train,input,by.x=0,by.y=0)
+  
+  rownames(merge_input_train)<-merge_input_train$Row.names
+  
+  merge_input_train<-merge_input_train[,-1]
+  
+  #Reference of ComBat_seq, Zhang, Y., Parmigiani, G., & Johnson, W. E. (2020). ComBat-Seq: batch effect adjustment for RNA-Seq count data. bioRxiv, 904730.
+  source(paste(path,"/ComBat_seq.R",sep=""))
+  source(paste(path,"/helper_seq.R",sep=""))
+  
+  data_no_batch<-ComBat_seq(counts = as.matrix(merge_input_train),batch = batch_num)
+  
+  #arrange data to required format
+  arrange_results<-arrange_format(pfile,graph_gene,data_no_batch[,(n_train+1):dim(merge_input_train)[2]],'Symbol')
+  
 }
 
 #7.save file
