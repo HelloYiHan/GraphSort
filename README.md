@@ -70,6 +70,10 @@ For RNA-Seq data, GraphSort could estimate fractions of 7 immune cell types: B c
 For Microarray data, GraphSort could estimate fractions of 8 immune cell types: Memory B cells, Naive B cells, Plasma cells, CD4 T cells, CD8 T cells, Monocytes, Dendritic cells, and NK cells.
 
 ## Example
+A detailed example about downloading datasets from GEO, preprocessing the input file (R code), uploading the input file to Google Colab, and running GraphSort is in the GitHub directory.
+
+Below is the running command of GraphSort:
+
 ```
 python ./GraphSort/run_graphsort.py --input example_data_gse107011.txt --type rnaseq --output gse107011_out.txt
 ```
