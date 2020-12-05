@@ -51,18 +51,20 @@ subprocess.call([path + '/preprocessing.R', args.input, train_file, args.type])
 print('Preprocessing done')
 
 #4.load model
-model = graphsort_core.Net(num_features = 1, y_size = 8).to(device)
 if args.type == 'rnaseq':
+    model = graphsort_core.Net(num_features = 1, y_size = 8).to(device)
     if device.type == "cuda":
         model.load_state_dict(torch.load(path + '/trained_models/graphsort_rnaseq_model.pkl',map_location='cuda'))
     else:
         model.load_state_dict(torch.load(path + '/trained_models/graphsort_rnaseq_model.pkl',map_location='cpu'))
 elif args.type =='microarray':
+    model = graphsort_core.Net(num_features = 1, y_size = 8).to(device)
     if device.type == "cuda":
         model.load_state_dict(torch.load(path + '/trained_models/graphsort_microarray_model.pkl',map_location='cuda'))
     else:
         model.load_state_dict(torch.load(path + '/trained_models/graphsort_microarray_model.pkl',map_location='cpu'))
 elif args.type == 'pancreatic':
+    model = graphsort_core.Net(num_features = 1, y_size = 6).to(device)
     if device.type == "cuda":
         model.load_state_dict(torch.load(path + '/trained_models/graphsort_pancreatic_model.pkl',map_location='cuda'))
     else:
