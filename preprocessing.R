@@ -29,8 +29,84 @@ suppressPackageStartupMessages({
 })
 
 
-#2.functions----------------------------------------------------------------
-arrange_format<-function(pfiles,graph_genes, bulk_rna_seq, gene_name_type){
+#2.parameters---------------------------------------------------------------------------
+Args <- commandArgs(trailingOnly = TRUE)
+
+if(is.na(Args[3])){stop("Not enough arguments!")}
+
+path<-sys.script()
+
+path<-paste(head(strsplit(x = path,split = "/")[[1]],-1),collapse = "/")
+
+
+#3.functions----------------------------------------------------------------
+if (Args[3]=="pancreatic") {
+  arrange_format<-function(pfiles,graph_genes, bulk_rna_seq, gene_name_type){
+    
+    graph_genes<-graph_genes[order(graph_genes$Entrez),]
+    
+    graphs<- sapply(pfiles, parseKGML2Graph)
+    
+    panGraph <- mergeGraphs(graphs)
+    
+    nodes(panGraph)<-translateKEGGID2GeneID(nodes(panGraph))
+    
+    panSubGraph<-subGraph(as.character(graph_genes$Entrez), panGraph)
+    
+    pan_sparse<-graph2SparseM(panSubGraph)
+    pan_coo<-as.matrix.coo(pan_sparse)
+    
+    numNode<-numNodes(panSubGraph)
+    
+    assert("num nodes is not 1818", numNode==1818)
+    
+    assert("row names of bulk_rna_seq should not have duplicated items!",sum(duplicated(row.names(bulk_rna_seq)))==0)
+    
+    assert("row names of bulk_rna_seq should not have NA!",sum(is.na(row.names(bulk_rna_seq)))==0)
+    
+    if(gene_name_type=='Entrez'){
+      bulk_rna_seq<-merge(graph_genes,bulk_rna_seq,by.x=1, by.y='row.names', all.x=T)
+    } else if(gene_name_type=='Ensembl'){
+      bulk_rna_seq<-merge(graph_genes,bulk_rna_seq,by.x=2, by.y='row.names', all.x=T)
+    } else if(gene_name_type=='Symbol'){
+      bulk_rna_seq<-merge(graph_genes,bulk_rna_seq,by.x=3, by.y='row.names', all.x=T)
+    } else{
+      stop("gene_name_type must be one of 'Entrez', 'Ensembl', 'Symbol'!")
+    }
+    
+    bulk_rna_seq[is.na(bulk_rna_seq)]<-0
+    
+    bulk_rna_seq<-bulk_rna_seq[order(bulk_rna_seq$Entrez),]
+    
+    assert("rows of bulk_rna_seq are different from those of panSubGraph!",sum(bulk_rna_seq$Entrez==nodes(panSubGraph))==1818)
+    
+    row.names(bulk_rna_seq)<-bulk_rna_seq[,1]
+    
+    bulk_rna_seq<-bulk_rna_seq[,-c(1,2,3)]
+    
+    assert("row num of raw file should be 1818!",dim(bulk_rna_seq)[1]==1818)
+    
+    if(gene_name_type=='Entrez'){
+      assert("row name of raw_file should be same with that of graph_genes",sum(row.names(bulk_rna_seq)==graph_genes[,1])==1818)
+    } else if(gene_name_type=='Ensembl'){
+      assert("row name of raw_file should be same with that of graph_genes",sum(row.names(bulk_rna_seq)==graph_genes[,2])==1818)
+    } else if(gene_name_type=='Symbol'){
+      assert("row name of raw_file should be same with that of graph_genes",sum(row.names(bulk_rna_seq)==graph_genes[,3])==1818)
+    } else{
+      stop("gene_name_type must be one of 'Entrez', 'Ensembl', 'Symbol'!")
+    }
+    
+    simBulk<-as.data.frame(t(t(bulk_rna_seq)/colSums(bulk_rna_seq)*1e6))
+    
+    
+    numGraph<-(dim(simBulk)[2])
+    
+    return.list<-list("simBulk"=simBulk, "pan_coo"=pan_coo, "numGraph"=numGraph, "numNode"=numNode)
+    
+    return(return.list)
+  }
+} else {
+  arrange_format<-function(pfiles,graph_genes, bulk_rna_seq, gene_name_type){
   
   graph_genes<-graph_genes[order(graph_genes$Entrez),]
   
@@ -94,6 +170,7 @@ arrange_format<-function(pfiles,graph_genes, bulk_rna_seq, gene_name_type){
   
   return(return.list)
 }
+}
 
 write_file_no_pro<-function(bulk, pan_coo, numGraph, numNode, folder_path, file_name){
   
@@ -120,18 +197,23 @@ write_file_no_pro<-function(bulk, pan_coo, numGraph, numNode, folder_path, file_
   
 }
 
-#3.parameters---------------------------------------------------------------------------
-Args <- commandArgs(trailingOnly = TRUE)
-
-if(is.na(Args[3])){stop("Not enough arguments!")}
-
-path<-sys.script()
-
-path<-paste(head(strsplit(x = path,split = "/")[[1]],-1),collapse = "/")
 
 #4.pre-defined variables and data----------------------------------------------------------
 #transform input file into required format for GraphSort
-file<- c("hsa04010.xml","hsa04620.xml","hsa04621.xml" ,"hsa05133.xml","hsa04218.xml",
+if(Args[3]=='pancreatic') {
+  files<- c('hsa04950','hsa04972','hsa04974','hsa04610','hsa04512',
+            'hsa04976','hsa04151','hsa05205','hsa04360','hsa04911',
+            'hsa05215','hsa04668','hsa05230','hsa04510','hsa05323',
+            'hsa04964','hsa04068','hsa01521','hsa04010','hsa05218',
+            'hsa00430','hsa00051','hsa00140','hsa04971','hsa04024',
+            'hsa05146','hsa00480','hsa05144','hsa04913','hsa04910',
+            'hsa04922','hsa04931','hsa01522','hsa04930','hsa04940')
+  pfile<- paste(path,"p_kgml", file, sep="/")
+  
+  graph_gene<-read.csv(paste(path,"pancreas_graph_genes.csv",sep = '/'),stringsAsFactors = F)
+  
+} else {
+  file<- c("hsa04010.xml","hsa04620.xml","hsa04621.xml" ,"hsa05133.xml","hsa04218.xml",
          "hsa04060.xml","hsa04061.xml","hsa04062.xml","hsa04064.xml","hsa05340.xml",
          "hsa04110.xml","hsa04115.xml","hsa04141.xml","hsa04142.xml","hsa05332.xml",
          "hsa04145.xml","hsa04151.xml","hsa04210.xml","hsa04217.xml","hsa05330.xml",
@@ -145,12 +227,14 @@ file<- c("hsa04010.xml","hsa04620.xml","hsa04621.xml" ,"hsa05133.xml","hsa04218.
          "hsa05205.xml","hsa05219.xml","hsa05221.xml","hsa05235.xml","hsa05164.xml",
          "hsa05416.xml","hsa05134.xml","hsa05145.xml","hsa05150.xml","hsa05162.xml")
 
-pfile<- paste(path,"kgml", file, sep="/")
+  pfile<- paste(path,"kgml", file, sep="/")
 
-graph_gene<-read.csv(paste(path,"GraphGenes.csv",sep = '/'),stringsAsFactors = F)
+  graph_gene<-read.csv(paste(path,"GraphGenes.csv",sep = '/'),stringsAsFactors = F)
+  
+}
+
 
 #5.read input----------------------------------------------------------------------------
-
 input<-read.table(file = Args[1],sep = "\t",row.names = 1,header = T,stringsAsFactors = F)
 
 #used to remove batch effect of input and training files
@@ -162,6 +246,7 @@ batch_num<-c(rep(1,n_train),rep(2,dim(input)[2]))
 
 #check if input file has required genes
 assert("The input file has too little required genes.", sum(rownames(input) %in% rownames(train))>0)
+
 
 #6.preprocess------------------------------------------------------------------------------------------
 if (Args[3]=="rnaseq") {
@@ -198,6 +283,7 @@ if (Args[3]=="rnaseq") {
   data_no_batch<-ComBat(dat=as.matrix(merge_input_train), batch = batch_num)
   
   arrange_results<-arrange_format(pfile,graph_gene,data_no_batch[,(n_train+1):dim(merge_input_train)[2]],'Symbol')
+  
 } else if (Args[3]=="pancreatic") {
   
   merge_input_train<-merge(train,input,by.x=0,by.y=0)
@@ -216,6 +302,7 @@ if (Args[3]=="rnaseq") {
   arrange_results<-arrange_format(pfile,graph_gene,data_no_batch[,(n_train+1):dim(merge_input_train)[2]],'Symbol')
   
 }
+
 
 #7.save file
 assert("The input file has too little required genes.", sum(colSums(arrange_results$simBulk)>0)==dim(arrange_results$simBulk)[2])
