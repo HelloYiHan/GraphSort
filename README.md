@@ -1,5 +1,5 @@
 # GraphSort
-GraphSort is a novel tool for in silico estimation of immune cell compositions in blood. Gene interactive relation information is extracted by GraphSort with graph convolutional network (GCN) and helped improve the accuracy of estimation. The signature matrix is no longer needed anymore for GraphSort thanks to the GCN. Compared with four mainstream and up-to-date deconvolution software, GraphSort achieves a higher Pearson correlation and lower absolute error of estimated cell fractions with respect to the ground truth.
+GraphSort is a novel tool for in silico estimation of immune and tissue cells compositions. Gene interactive relation information in the Kyoto Encyclopedia of Genes and Genomes (KEGG) is extracted by GraphSort with graph convolutional network (GCN) and it helped improve the accuracy of estimation. The signature matrix is no longer needed anymore for GraphSort thanks to the GCN. Compared with four mainstream and up-to-date deconvolution software, GraphSort achieves a higher Pearson correlation and lower absolute error of estimated cell fractions with respect to the ground truth.
 
 ## Brief Introduction
 The workflow of GraphSort:
@@ -8,7 +8,7 @@ The workflow of GraphSort:
 ## Run Online
 GraphSort could be installed and run in [Google Colab online](https://colab.research.google.com/drive/1n8IYkP8SeSOhyrYDdcJYJ6EtMwK7NWBn?usp=sharing)
 
-Please read the manual below especially the Formatting Requirements of Input Mixture File before running the program.
+Please read the manual below especially the Formatting Requirements of Input Mixture File part before running the program.
 ## Local Installation
 
 ### PyTorch and Extension Libraries
@@ -22,7 +22,7 @@ pip install torch-spline-conv==1.1.0
 pip install torch-geometric==1.3.2
 ```
 ### Standard R Package
-Preprocessing is implemented in R and the following packages are needed: KEGGgraph, KEGG.db, testit, SparseM, graph, funr, edgeR, sva, preprocessCore.
+Preprocessing is implemented in R and the following packages are needed: KEGGgraph, KEGG.db, testit, SparseM, graph, funr, edgeR, sva, and preprocessCore.
 
 ### Dependent Datasets
 Training datasets are needed to remove the batch effect of input and training datasets.
@@ -30,7 +30,8 @@ Training datasets are needed to remove the batch effect of input and training da
 1. [Download](https://drive.google.com/file/d/18DoMwpMa8PFajx_Q-gXWMrWOsEYBkXtE/view?usp=sharing) the RNA-Seq training dataset with 1k samples (simulated).
 2. [Download](https://drive.google.com/file/d/19K_qwpuI5eHPr1l5He3p0vY8wt3Uq7sH/view?usp=sharing) the RNA-Seq training dataset with 2k samples (simulated). It uses more memory than the 1k training dataset.
 3. [Download](https://drive.google.com/file/d/1NnlqQbPd2xC7lHSZaeVWTz6MuBhI_RLm/view?usp=sharing) the Microarray training dataset.
-4. Uncompress these datasets and put them in the GraphSort directory, e.g.
+4. [Download](https://drive.google.com/file/d/1erBWx8JNFzfePlIXriulrghxaaKAHxl7/view?usp=sharing) the pancreatic islet training dataset.
+5. Uncompress these datasets and put them in the GraphSort directory, e.g.
 ```
 unzip rem_bat_eff_dat_n1000.zip
 mv rem_bat_eff_dat_n1000.txt ./GraphSort
@@ -41,8 +42,8 @@ mv rem_bat_eff_dat_n1000.txt ./GraphSort
 python run_graphsort.py [arguments]
 
 Required arguments:
---input        -i      Expression data (RNA-Seq or microarray) of samples to be estimated
---type         -t      Expression data type: rnaseq OR microarray
+--input        -i      The expression file to be analyzed.
+--type         -t      The type of the input file: 'rnaseq' OR 'microarray' for immune cells; 'pancreatic' for endocrine cells in the human pancreatic islets.
 
 Optional arguments:
 --output       -o      Filename of the estimation output. Default: graphsort_out.txt
@@ -55,22 +56,24 @@ The `format` of the input `RNA-Seq` data should be:
 * `Tab-delimited` with no double quotations and no missing entries.
 * The first row consists of sample names.
 * The first column consists of `Ensembl Gene IDs`.
-* Values are not log-transformed.
-* Values should be raw counts.
+* The values are not log-transformed.
+* The values should be raw counts.
 
 The `format` of the input `Microarray` data should be:
 * `Tab-delimited` with no double quotations and no missing entries.
 * The first row consists of sample names.
 * The first column consists of `Gene Symbols`.
-* Values are not log-transformed.
+* The values are not log-transformed.
 
 ## Output
-For RNA-Seq data, GraphSort could estimate fractions of 7 immune cell types: B cells, CD4 T cells, CD8 T cells, Monocytes, Basophils, Dendritic cells, and NK cells.
+To estimate immune cells with RNA-Seq data, GraphSort could estimate fractions of 7 immune cell types: B cells, CD4 T cells, CD8 T cells, Monocytes, Basophils, Dendritic cells, and NK cells.
 
-For Microarray data, GraphSort could estimate fractions of 8 immune cell types: Memory B cells, Naive B cells, Plasma cells, CD4 T cells, CD8 T cells, Monocytes, Dendritic cells, and NK cells.
+To estimate immune cells with Microarray data, GraphSort could estimate fractions of 8 immune cell types: Memory B cells, Naive B cells, Plasma cells, CD4 T cells, CD8 T cells, Monocytes, Dendritic cells, and NK cells.
+
+To estimate endocrine cells in human pancreatic islets, GraphSort could estimate fractions of 4 endocrine cell types: alpha cells, beta cells, gamma cells, and delta cells. The exocrine ductal and acinar cells are also estimated.
 
 ## Example
-A detailed example about downloading datasets from GEO, preprocessing the input file (R code), uploading the input file to Google Colab, and running GraphSort is in the GitHub directory.
+A detailed example about downloading datasets from GEO, preprocessing the input file (R code), uploading the input file to Google Colab, and running GraphSort is in the GitHub directory (detailed example.txt).
 
 Below is the running command of GraphSort:
 
