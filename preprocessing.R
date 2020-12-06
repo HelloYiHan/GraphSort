@@ -200,8 +200,8 @@ write_file_no_pro<-function(bulk, pan_coo, numGraph, numNode, folder_path, file_
 
 #4.pre-defined variables and data----------------------------------------------------------
 #transform input file into required format for GraphSort
-if(Args[3]=='pancreatic') {
-  files<- c('hsa04950','hsa04972','hsa04974','hsa04610','hsa04512',
+if(Args[3]=="pancreatic") {
+  file<- c('hsa04950','hsa04972','hsa04974','hsa04610','hsa04512',
             'hsa04976','hsa04151','hsa05205','hsa04360','hsa04911',
             'hsa05215','hsa04668','hsa05230','hsa04510','hsa05323',
             'hsa04964','hsa04068','hsa01521','hsa04010','hsa05218',
@@ -209,6 +209,8 @@ if(Args[3]=='pancreatic') {
             'hsa05146','hsa00480','hsa05144','hsa04913','hsa04910',
             'hsa04922','hsa04931','hsa01522','hsa04930','hsa04940')
   pfile<- paste(path,"p_kgml", file, sep="/")
+  
+  pfile<-paste(pfile,"xml",sep=".")
   
   graph_gene<-read.csv(paste(path,"pancreas_graph_genes.csv",sep = '/'),stringsAsFactors = F)
   
