@@ -8,7 +8,7 @@ The workflow of GraphSort:
 ## Run Online
 GraphSort could be installed and run in [Google Colab online](https://colab.research.google.com/drive/1n8IYkP8SeSOhyrYDdcJYJ6EtMwK7NWBn?usp=sharing)
 
-Please read the manual below especially the Formatting Requirements of Input Mixture File part before running the program.
+Please read the manual below, especially the Formatting Requirements of Input Mixture File part before running the program.
 ## Local Installation
 
 ### PyTorch and Extension Libraries
@@ -63,6 +63,12 @@ The `format` of the input `Microarray` data should be:
 * `Tab-delimited` with no double quotations and no missing entries.
 * The first row consists of sample names.
 * The first column consists of `Gene Symbols`.
+* The values are not log-transformed.
+
+The `format` of  `human pancreatic islets` data should be:
+* `Tab-delimited` with no double quotations and no missing entries.
+* The first row should be sample names.
+* The first column should be the `Gene Symbols`.
 * The values are not log-transformed.
 
 ## Output
