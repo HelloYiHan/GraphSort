@@ -81,6 +81,8 @@ To estimate endocrine cells in human pancreatic islets, GraphSort could estimate
 ## Example
 A detailed example about downloading datasets from GEO, preprocessing the input file (R code), uploading the input file to Google Colab, and running GraphSort is in the GitHub directory (detailed example.txt).
 
+Example datasets [GSE107011](https://drive.google.com/file/d/1nqR8C_x8uX8J6ifZqmfnF29cLTvRkhkQ/view?usp=sharing), [SDY67](https://drive.google.com/file/d/1tTb4dSL_xj-eEoaRuu27faOX07gRBNNX/view?usp=sharing), [GSE65133](https://drive.google.com/file/d/1j9taMZvFkD8mTs0hLjRLn0PijLyIhI0z/view?usp=sharing), [GSE106898](https://drive.google.com/file/d/1eLcqgCdDG7aVoa-cNpSORG5wkYPPgyuz/view?usp=sharing), [E-MTAB5060](https://drive.google.com/file/d/1tS6RdUj93iKTzYfjAq7Eq0Y-SBQXjxcB/view?usp=sharing), [GSE59654](https://drive.google.com/file/d/1T4CROU-iJX3mZfKAhNsxsO4sxuFhcwnJ/view?usp=sharing), and [GSE60424](https://drive.google.com/file/d/1_TEzuku9ePRiKFpHUzbsQVK8xEX5Er1A/view?usp=sharing) could be downloaded here.
+
 Below is the running command of GraphSort:
 
 ```
