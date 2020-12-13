@@ -6,7 +6,7 @@ The workflow of GraphSort:
 ![alt text](https://github.com/HelloYiHan/GraphSort/blob/master/FigInGitHub.png?raw=true)
 
 ## Run Online
-GraphSort could be installed and run in [Google Colab online](https://colab.research.google.com/drive/1n8IYkP8SeSOhyrYDdcJYJ6EtMwK7NWBn?usp=sharing)
+GraphSort could be installed and run on [Google Colab online](https://colab.research.google.com/drive/1n8IYkP8SeSOhyrYDdcJYJ6EtMwK7NWBn?usp=sharing)
 
 Please read the manual below, especially the Formatting Requirements of Input Mixture File part before running the program.
 ## Local Installation
@@ -46,7 +46,7 @@ Required arguments:
 --type         -t      The type of the input file: 'rnaseq' OR 'microarray' for immune cells; 'pancreatic' for endocrine cells in the human pancreatic islets.
 
 Optional arguments:
---output       -o      Filename of the estimation output. Default: graphsort_out.txt
+--output       -o      Filename of the estimated output. Default: graphsort_out.txt
 --batch_size   -b      Batch size for computation. Default: 10
 --device       -d      Computation device: gpu OR cpu. Default: cpu
 --size         -s      Data size in preprocessing(only matters for RNA-Seq data): 1k OR 2k. Default: 1k
@@ -89,6 +89,6 @@ Below is the running command of GraphSort:
 python ./GraphSort/run_graphsort.py --input example_data_gse107011.txt --type rnaseq --output gse107011_out.txt
 ```
 
-## Cite
+## Citation
 Please cite our paper if you use GraphSort in your work:
 > Han, Y. et al. (2020) GraphSort: a geometric deep learning algorithm for in silico dissecting cell compositions in bulk expression data. Manuscript submitted for publication.
