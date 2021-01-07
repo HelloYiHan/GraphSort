@@ -69,7 +69,7 @@ The `format` of  `human pancreatic islets` data should be:
 * `Tab-delimited` with no double quotations and no missing entries.
 * The first row should be sample names.
 * The first column should be the `Gene Symbols`.
-* The values are not log-transformed.
+* The values are not log-transformed and raw RNA-Seq counts.
 
 ## Output
 To estimate immune cells with RNA-Seq data, GraphSort could estimate fractions of 7 immune cell types: B cells, CD4 T cells, CD8 T cells, Monocytes, Basophils, Dendritic cells, and NK cells.
