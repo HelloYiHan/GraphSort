@@ -15,9 +15,17 @@ NOTE: Sometimes the required python package torch-sparse==0.4.0 can not be succe
 ## Docker
 First, download the  docker image.
 
-Second, load the docker image. ```docker load --input ./GraphSortV101.tar```
+Second, load the docker image.
 
-Third, test an example dataset. ```docker run -it -v YourWorkingDirectory:/local graphsort:v1.0.1 python /workspace/GraphSort-master/run_graphsort.py --input /workspace/GraphSort-master/example_data_gse107011.txt --type rnaseq --output /local/test_107011_out.txt```
+```docker load --input ./GraphSortV101.tar```
+
+Third, test an example dataset. Remeber to replace the YourWorkingDirectory with your path.
+
+```docker run -it -v YourWorkingDirectory:/local graphsort:v1.0.1 python /workspace/GraphSort-master/run_graphsort.py --input /workspace/GraphSort-master/example_data_gse107011.txt --type rnaseq --output /local/test_107011_out.txt```
+
+Fourth, run your datasets. Remeber to replace the YourData.txt with your file name.
+
+```docker run -it -v YourWorkingDirectory:/local graphsort:v1.0.1 python /workspace/GraphSort-master/run_graphsort.py --input /local/YourData.txt --type rnaseq/microarray/pancreatic --output /local/YourData_out.txt ```
 
 ## Local Installation
 
