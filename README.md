@@ -10,14 +10,12 @@ GraphSort could be installed and run on [Google Colab online](https://colab.rese
 
 Please read the manual below, especially the Formatting Requirements of Input Mixture File part before running the program.
 
-NOTE: Sometimes the required python package torch-sparse==0.4.0 can not be successfully installed since its developer no longer maintains this old version any more. We provide the docker image of our GraphSort instead.
+***Note***: Sometimes the required python package torch-sparse==0.4.0 can not be successfully installed since its developer no longer maintains this old version any more. We provide the docker image of our GraphSort instead.
 
 ## Docker
 First, download the  docker image.
 
-Second, load the docker image.
-
-```docker load --input ./GraphSortV101.tar```
+Second, load the docker image. ```docker load --input ./GraphSortV101.tar```
 
 Third, test an example dataset. Remeber to replace the YourWorkingDirectory with your path.
 
