@@ -26,7 +26,7 @@ Third, test an example dataset. **Remeber** to replace the YourWorkingDirectory(
 docker run -it -v YourWorkingDirectory:/local graphsort:v1.0.1 python /workspace/GraphSort-master/run_graphsort.py --input /workspace/GraphSort-master/example_data_gse107011.txt --type rnaseq --output /local/test_107011_out.txt
 ```
 
-Fourth, run your datasets. **Remeber** to replace the YourData(2 places) with your file name and the YourWorkingDirectory(1 places) with your path.
+Fourth, run your datasets. **Remeber** to replace the YourData(2 places) with your file name and the YourWorkingDirectory(1 places) with your path. **Remeber** to set the --type argument. The usage of arguments is below.
 
 ```shell
 docker run -it -v YourWorkingDirectory:/local graphsort:v1.0.1 python /workspace/GraphSort-master/run_graphsort.py --input /local/YourData.txt --type rnaseq/microarray/pancreatic --output /local/YourData_out.txt
