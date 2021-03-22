@@ -14,6 +14,8 @@ Please read the manual below, especially the Formatting Requirements of Input Mi
 
 ## Docker
 First, download the  docker image.
+Link: https://pan.baidu.com/s/1ChbL9xsPfwa5OFvGQQCbAg 
+Password：dcgd 
 
 Second, load the docker image.
 ```shell
